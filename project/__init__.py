@@ -33,4 +33,8 @@ def create_app():
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
 
+    # register blueprint for editor parts of app
+    from .editor import editor as editor_blueprint
+    app.register_blueprint(editor_blueprint)
+
     return app
