@@ -1,6 +1,5 @@
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required
-from .mongoDb import get_database
 
 from project.models import NeoScript
 from dotenv import dotenv_values
@@ -12,14 +11,6 @@ editor = Blueprint('editor', __name__)
 @editor.route('/editor')
 @login_required
 def index():
-    db = get_database('IntegrationDb')
-
-    dbCollection = db['Scipts']
-    
-    item_details = dbCollection.find()
-    for item in item_details:
-        print(item)
-
     return render_template('editor.html')
 
 @editor.route('/editor', methods=['POST'])
