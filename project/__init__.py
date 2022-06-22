@@ -28,7 +28,7 @@ def create_app():
     @login_manager.user_loader
     def login_user(user_id):
         # since the user_id is just the primary key for our user table, us it in the query for the user
-        return User.query.get(int(user_id))
+        return User.objects(pk=user_id).first()
 
 
     # blueprint for auth routes in our app
