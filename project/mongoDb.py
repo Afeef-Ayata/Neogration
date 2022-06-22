@@ -1,6 +1,9 @@
 from dotenv import dotenv_values
+from mongoengine import connect
+
 
 config = dotenv_values(".env")
+connect(host=config["ATLAS_URI"])
 
 # This file wil the core mongodb management client
 

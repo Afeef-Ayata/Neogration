@@ -1,8 +1,17 @@
 from flask_login import UserMixin
 from . import db
+from mongoengine import Document,StringField, DateField, DateTimeField
+import datetime
 
 class User(UserMixin,db.Model):
     id = db.Column(db.Integer, primary_key=True) # primary keys are required by SQLAlchemy
     email = db.Column(db.String(100), unique=True)
     password = db.Column(db.String(100))
     name = db.Column(db.String(1000))
+
+class NeoScript(Document):
+    name = StringField()
+    description = StringField()
+    author = StringField()
+    date = DateTimeField(default=datetime.datetime.utcnow)
+    script = StringField()
