@@ -10,6 +10,10 @@ connect(host=config["ATLAS_URI"])
 def create_app():
     app = Flask(__name__)
 
+    # set the secret_key
+    # this is need to maintain user sessions
+    app.config['SECRET_KEY'] = 'secret-key-goes-here'
+
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'
     login_manager.init_app(app)
