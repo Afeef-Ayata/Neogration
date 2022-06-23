@@ -1,6 +1,7 @@
 from flask_login import UserMixin
 from mongoengine import Document,StringField, DateTimeField
 import datetime
+
 class User(UserMixin,Document):
     email = StringField()
     password = StringField()
