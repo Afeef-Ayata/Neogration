@@ -1,34 +1,72 @@
 {% extends "base.html" %}
 
 {% block content %}
-<form method="POST" action="/editor">
+<div style="height:100vh">
   <h1 class="title">
     Flask based integration editor
   </h1>
   <h2 class="subtitle">
     Create and make your integration code here.
   </h2>
-  
-  <div class="field">
-    <div class="control">
-      <input class="input is-large" name="name" placeholder="Your Script Name" autofocus >
-    </div>
-  </div>
 
-  <div class="field">
-    <div class="control">
-      <input class="input is-large" name="description" placeholder="Your Description">
-    </div>
-  </div>
-  
-  <div class="field">
-    <div class="control">
-        <textarea name="scriptarea" class="textarea" placeholder="Just paste your python script here."></textarea>
-    </div>
-  </div>
+  <div class="is-widescreen">
+    <div class="columns">
+      <aside class="menu column has-text-left">
+        <p class="menu-label">
+          My Works
+        </p>
+        <ul id="tabs" class="menu-list">
+          <li id="one"><a style="color:black">Scripts</a></li>
+          <li id="two"><a style="color:black">Script Groups</a></li>
+        </ul>
+      </aside>
+      <div class="column is-four-fifths">
+        <div class="tab-view-holder is-large">
+          <div id="script">
+            <form method="POST" action="/editor">        
+              <div class="field">
+                <div class="control">
+                  <input class="input is-large" name="name" placeholder="Script Name" autofocus >
+                </div>
+              </div>
+            
+              <div class="field">
+                <div class="control">
+                  <input class="input is-large" name="description" placeholder="Description">
+                </div>
+              </div>
 
-  <button class="button is-block is-info is-large is-fullwidth">Upload Script</button>
+              <div class="field">
+                <div class="control">
+                    <textarea name="scriptarea" class="textarea" placeholder="Just paste your python script here."></textarea>
+                </div>
+              </div>
+              <button class="button is-block is-info is-large is-fullwidth">Upload Script</button>
+            </form>
+          </div>
+          <div id="group">
+            Group
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> 
+<div>
 
-</form>
+<script>
+  var tabs = document.getElementById("tabs")
+  var tabView = document.getElementsByClassName("tab-view-holder")[0]
+
+  Array.prototype.forEach.call(tabs.children,(tab,i)=>{
+    tab.onclick = function(){
+      // Hide all the views first
+      Array.prototype.forEach.call(tabView.children, (e,i)=>{
+        e.classList.add("is-hidden");
+      })
+      // Now its the time to show only the view corresponding to the selected tab
+      tabView.children[i].classList.toggle("is-hidden");
+    };
+  })
+</script>
 
 {% endblock %}
