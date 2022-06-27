@@ -16,13 +16,14 @@
           My Works
         </p>
         <ul id="tabs" class="menu-list">
-          <li id="one"><a style="color:black">Scripts</a></li>
-          <li id="two"><a style="color:black">Script Groups</a></li>
+          <li id="newScript"><a style="color:black">New Script</a></li>
+          <li id="allScript"><a style="color:black">All Scripts</a></li>
+          <li id="scriptGroups"><a style="color:black">Script Groups</a></li>
         </ul>
       </aside>
       <div class="column is-four-fifths">
         <div id="tab-view-holder" class="is-large">
-          <div id="script">
+          <div id="newScript">
             <form method="POST" action="/editor">        
               <div class="field">
                 <div class="control">
@@ -44,8 +45,10 @@
               <button class="button is-block is-info is-large is-fullwidth">Upload Script</button>
             </form>
           </div>
-          <div id="group">
+          <div id="allScript">
             Group
+          </div>
+          <div id="scriptGroups">
           </div>
         </div>
       </div>
@@ -60,7 +63,7 @@
   showOnlyTheViewByIndex(0)
   Array.prototype.forEach.call(tabs.children,(tab,i)=>{
     tab.onclick = function(){
-      showOnlyTheViewByIndex(i)
+      showTabViewById(tab.id)
     };
   })
 
@@ -71,6 +74,18 @@
     })
     // Now its the time to show only the view corresponding to the selected index
     tabView.children[index].classList.toggle("is-hidden");
+  }
+
+  function showTabViewById(id){
+    // Hide all the views first
+    Array.prototype.forEach.call(tabView.children, (e,i)=>{
+      e.classList.add("is-hidden");
+    })
+
+    // find the corresponding tabView with the provided id
+    var currentView = [...tabView.children].find((tv)=>tv.id == id)
+    // Now toggle the "is-hidden" class for the currentView
+    currentView.classList.toggle("is-hidden");
   }
 </script>
 
