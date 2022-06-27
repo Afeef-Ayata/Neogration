@@ -21,7 +21,7 @@
         </ul>
       </aside>
       <div class="column is-four-fifths">
-        <div class="tab-view-holder is-large">
+        <div id="tab-view-holder" class="is-large">
           <div id="script">
             <form method="POST" action="/editor">        
               <div class="field">
@@ -55,18 +55,23 @@
 
 <script>
   var tabs = document.getElementById("tabs")
-  var tabView = document.getElementsByClassName("tab-view-holder")[0]
+  var tabView = document.getElementById("tab-view-holder")
 
+  showOnlyTheViewByIndex(0)
   Array.prototype.forEach.call(tabs.children,(tab,i)=>{
     tab.onclick = function(){
-      // Hide all the views first
-      Array.prototype.forEach.call(tabView.children, (e,i)=>{
-        e.classList.add("is-hidden");
-      })
-      // Now its the time to show only the view corresponding to the selected tab
-      tabView.children[i].classList.toggle("is-hidden");
+      showOnlyTheViewByIndex(i)
     };
   })
+
+  function showOnlyTheViewByIndex(index){
+    // Hide all the views first
+    Array.prototype.forEach.call(tabView.children, (e,i)=>{
+      e.classList.add("is-hidden");
+    })
+    // Now its the time to show only the view corresponding to the selected index
+    tabView.children[index].classList.toggle("is-hidden");
+  }
 </script>
 
 {% endblock %}
