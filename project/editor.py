@@ -1,3 +1,4 @@
+import json
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required
 
@@ -44,5 +45,4 @@ def add_new_script():
 
 @editor.route("/list")
 def get_all_scripts():
-    return str(NeoScript.objects.to_json())
-    return str([i.name for i in NeoScript.objects])
+    return {'myscripts':json.loads(NeoScript.objects.to_json())}
