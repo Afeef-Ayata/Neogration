@@ -57,6 +57,10 @@
   .itemlist .creator {
     position: relative;
     line-height: 1.15em;
+    width:100%;
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
   }
   .itemlist .creator h4 {
     font-weight: 800;
@@ -68,6 +72,9 @@
     color: #000;
     font-size: 0.85em;
     transition: 0.5s;
+  }
+  .itemlist .creator .date {
+    max-width: min-content;
   }
   .itemlist:hover .creator p {
     color: #fff;
@@ -97,24 +104,26 @@
       <div class="column is-four-fifths">
         <div id="tab-view-holder" class="is-large">
           <div id="newScript">
-            <form method="POST" action="/editor">        
+            <form method="POST" action="/editor">
+
               <div class="field">
                 <div class="control">
-                  <input class="input is-large" name="name" placeholder="Script Name" autofocus >
-                </div>
-              </div>
-            
-              <div class="field">
-                <div class="control">
-                  <input class="input is-large" name="description" placeholder="Description">
+                  <input class="input is-large" name="name" placeholder="Script Name" autofocus required>
                 </div>
               </div>
 
               <div class="field">
                 <div class="control">
-                    <textarea name="scriptarea" class="textarea" placeholder="Just paste your python script here."></textarea>
+                  <input class="input is-large" name="description" placeholder="Description" required>
                 </div>
               </div>
+
+              <div class="field">
+                <div class="control">
+                    <textarea name="scriptarea" class="textarea" placeholder="Just paste your python script here." minlength="20" required></textarea>
+                </div>
+              </div>
+
               <button class="button is-block is-info is-large is-fullwidth">Upload Script</button>
             </form>
           </div>
@@ -167,11 +176,16 @@
     // Add each and every fetched scripts into the section
     scriptList.forEach((s,i)=>{  
       var item = document.createElement("div");
+
+      var date = new Date(s.date.$date)
       item.innerHTML = `<div class="itemlist">
         <div class="rank"><span>${i+1}</span></div>
         <div class="creator">
-          <h4>${s.name}</h4>
-          <p>${s.date.$date}</p>
+          <div>
+            <h4>${s.name}</h4>
+            <p>${s.description}</p>
+          </div>
+          <p class="date">${date.toLocaleString().replace(',','')}</p>
         </div>
       </div>`
 
