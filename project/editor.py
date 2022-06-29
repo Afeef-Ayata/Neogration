@@ -45,4 +45,4 @@ def add_new_script():
 
 @editor.route("/list")
 def get_all_scripts():
-    return {'myscripts':json.loads(NeoScript.objects.to_json())}
+    return {'myscripts':json.loads(NeoScript.objects.order_by('-date').to_json())}
