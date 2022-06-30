@@ -38,6 +38,11 @@ def get_all_scripts():
     return {'myscripts':json.loads(NeoScript.objects(author=str(current_user.id)).order_by('-date').to_json())}
 
 
+@editor.route("/my-neoworks")
+@login_required
+def my_neoworks():
+    return {'myworks':json.loads(NeoWork.objects(author=str(current_user.id)).order_by('-date').to_json())}
+
 @editor.route("/create-new-work", methods=['POST'])
 @login_required
 def create_new_work():

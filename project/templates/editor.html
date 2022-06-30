@@ -95,7 +95,7 @@
         <ul id="tabs" class="menu-list">
           <li id="newScript"><a style="color:black">New Script</a></li>
           <li id="allScript"><a style="color:black">All Scripts</a></li>
-          <li id="scriptGroups"><a style="color:black">NeoWorks</a></li>
+          <li id="neoWorks"><a style="color:black">NeoWorks</a></li>
         </ul>
       </aside>
       <div class="column is-four-fifths">
@@ -128,8 +128,10 @@
             <section class="has-text-left">
             </section>
           </div>
-          <div id="scriptGroups">
+          <div id="neoWorks">
             The script groups
+            <section class="has-text-left">
+            </section>
             <div class="is-fab has-content-centered">
               <button class="button is-danger is-rounded" onClick="toggleModal()">
                 <span class="icon">
@@ -183,11 +185,12 @@
       showTabViewById(tab.id)
       switch(tab.id){
         case "allScript":
-          if (scriptList.length == 0 )
+          if (scriptList.length == 0)
             getScriptsList();
           break;
-        case "scriptGroups":
-          console.error('Load the script groups')
+        case "neoWorks":
+          if (myWorks.length == 0)
+            getMyWorks();
           break;
       }
     };
@@ -213,6 +216,31 @@
             <p>${s.description}</p>
           </div>
           <p class="date">${date.toLocaleString().replace(',','')}</p>
+        </div>
+      </div>`
+
+      section.appendChild(item)
+    })    
+  }
+
+  var myWorks = []
+
+  function showMyNeoWorks(){
+    section = currentView.getElementsByTagName('section')[0]
+
+    // Add each and every fetched scripts into the section
+    myWorks.forEach((s,i)=>{  
+      var item = document.createElement("div");
+
+      var createdAt = new Date(s.creationDate.$date)
+      item.innerHTML = `<div class="itemlist">
+        <div class="rank"><span>${i+1}</span></div>
+        <div class="creator">
+          <div>
+            <h4>${s.name}</h4>
+            <p>${s.description}</p>
+          </div>
+          <p class="date">${createdAt.toLocaleString().replace(',','')}</p>
         </div>
       </div>`
 
@@ -266,6 +294,14 @@
     .then(data=>data.myscripts);
 
     showSavedScripts();
+  }
+
+  async function getMyWorks(){
+    myWorks = await fetch('/my-neoworks')
+    .then(response => response.json())
+    .then(data=>data.myworks);
+
+    showMyNeoWorks();
   }
   /***********************************************************************/
   /********************* Utility functions ENDS here *********************/
