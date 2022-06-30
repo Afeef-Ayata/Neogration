@@ -93,43 +93,55 @@
           My NeoWorks
         </p>
         <ul id="tabs" class="menu-list">
-          <li id="newScript"><a style="color:black">New Script</a></li>
-          <li id="allScript"><a style="color:black">All Scripts</a></li>
+          <li id="newScripts"><a style="color:black">NeoScripts</a></li>
           <li id="neoWorks"><a style="color:black">NeoWorks</a></li>
         </ul>
       </aside>
       <div class="column is-four-fifths">
         <div id="tab-view-holder" class="is-large">
-          <div id="newScript">
-            <form method="POST" action="/editor">
-
-              <div class="field">
-                <div class="control">
-                  <input class="input is-large" name="name" placeholder="Script Name" autofocus required>
-                </div>
-              </div>
-
-              <div class="field">
-                <div class="control">
-                  <input class="input is-large" name="description" placeholder="Description" required>
-                </div>
-              </div>
-
-              <div class="field">
-                <div class="control">
-                    <textarea name="scriptarea" class="textarea" placeholder="Just paste your python script here." minlength="20" required></textarea>
-                </div>
-              </div>
-
-              <button class="button is-block is-info is-large is-fullwidth">Upload Script</button>
-            </form>
-          </div>
-          <div id="allScript">
+          <div id="newScripts">
             <section class="has-text-left">
             </section>
+            <div class="is-fab has-content-centered">
+              <button class="button is-danger is-rounded" onClick="toggleModal()">
+                <span class="icon">
+                  <i class="fas fa-pen-fancy"></i>
+                </span>
+                <span>New NeoScript</span>
+              </button>
+              <div class="modal">
+                <div class="modal-background" onClick="toggleModal()"></div>
+                <div class="modal-content">
+                    <div class="box">
+                      <form method="POST" action="/editor">
+                        <div class="field">
+                          <div class="control">
+                            <input class="input is-large" name="name" placeholder="Script Name" autofocus required>
+                          </div>
+                        </div>
+          
+                        <div class="field">
+                          <div class="control">
+                            <input class="input is-large" name="description" placeholder="Description" required>
+                          </div>
+                        </div>
+          
+                        <div class="field">
+                          <div class="control">
+                              <textarea name="scriptarea" class="textarea" placeholder="Just paste your python script here." minlength="20" required></textarea>
+                          </div>
+                        </div>
+          
+                        <button class="button is-block is-info is-large is-fullwidth">Upload Script</button>
+                      </form>
+
+                    </div>
+                </div>       
+              </div>
+            </div>
           </div>
           <div id="neoWorks">
-            The script groups
+            My NeoWorks
             <section class="has-text-left">
             </section>
             <div class="is-fab has-content-centered">
@@ -184,7 +196,7 @@
     tab.onclick = function(){
       showTabViewById(tab.id)
       switch(tab.id){
-        case "allScript":
+        case "newScripts":
           if (scriptList.length == 0)
             getScriptsList();
           break;
