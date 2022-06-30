@@ -38,4 +38,8 @@ def create_app():
     from .editor import editor as editor_blueprint
     app.register_blueprint(editor_blueprint)
 
+    from .editor import my_neoworks, my_neoscripts
+    app.jinja_env.globals.update(getMyWorks=my_neoworks)
+    app.jinja_env.globals.update(getMyScripts=my_neoscripts)
+
     return app

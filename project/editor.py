@@ -32,13 +32,10 @@ def create_new_script():
     
     return redirect(url_for('main.success'))
 
-@editor.route("/list")
 @login_required
-def get_all_scripts():
+def my_neoscripts():
     return {'myscripts':json.loads(NeoScript.objects(author=str(current_user.id)).order_by('-date').to_json())}
 
-
-@editor.route("/my-neoworks")
 @login_required
 def my_neoworks():
     return {'myworks':json.loads(NeoWork.objects(author=str(current_user.id)).order_by('-date').to_json())}
@@ -60,3 +57,11 @@ def create_new_work():
     flash(f"Your Work {name} is saved")
     
     return redirect(url_for('main.success'))
+
+@editor.route('/neoworks/<string:work_id>')
+@login_required
+def workeditor(work_id):
+    # TODO make sure the current user have permission to work on provided workId
+    # TODO make work Editor
+    print('this is just fun',work_id)
+    return 'This is the work Editor ' + work_id
