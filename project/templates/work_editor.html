@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div style="min-height:100vh">
+  <h1 class="title">
+    NeoWork editor
+  </h1>
+  <h2 class="subtitle">
+    Manage your NeoWork here
+  </h2>
+
+  <div class="is-widescreen">
+    <div class="columns">
+      <aside class="menu column has-text-left">
+        <p class="menu-label">
+          My Scripts
+        </p>
+        <ul id="tabs" class="menu-list">
+            {% with neoScript = getMyScripts() %}
+              {% if neoScript %}
+                {% for script in neoScript.myscripts %} 
+                    <li id={{script._id['$oid']}}>{{script.name}}</li>
+                {% endfor %}
+              {% endif %}
+            {% endwith %}
+        </ul>
+      </aside>
+      <div class="column is-four-fifths" style='background-color:red'>
+        <div id="tab-view-holder" class="is-large">
+          This is the editor view for your neoworks
+          <p>{{work_id}}</p>
+        </div>
+      </div>
+    </div>
+  </div> 
+<div>
+
+{% endblock %}

@@ -64,4 +64,4 @@ def workeditor(work_id):
     # TODO make sure the current user have permission to work on provided workId
     # TODO make work Editor
     print('this is just fun',work_id)
-    return 'This is the work Editor ' + work_id
+    return render_template('work_editor.html', work_id = work_id)
