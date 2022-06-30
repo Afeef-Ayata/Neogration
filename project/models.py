@@ -1,5 +1,5 @@
 from flask_login import UserMixin
-from mongoengine import Document,StringField, DateTimeField
+from mongoengine import Document,StringField, DateTimeField,ListField
 import datetime
 
 class User(UserMixin,Document):
@@ -13,3 +13,10 @@ class NeoScript(Document):
     author = StringField()
     date = DateTimeField(default=datetime.datetime.utcnow)
     script = StringField()
+
+class NeoWork(Document):
+    name = StringField()
+    description = StringField()
+    author = StringField()
+    creationDate = DateTimeField(default=datetime.datetime.utcnow)
+    neoScriptsList = ListField(StringField())

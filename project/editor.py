@@ -2,7 +2,7 @@ import json
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required
 
-from project.models import NeoScript
+from project.models import NeoScript, NeoWork
 from dotenv import dotenv_values
 
 config = dotenv_values(".env")
@@ -22,7 +22,7 @@ def create_new_script():
     new_script = NeoScript(
         name = name,
         description = request.form.get('description'),
-        author = current_user.name,
+        author = str(current_user.id),
         script = request.form.get('scriptarea'),
     )
 
@@ -32,17 +32,26 @@ def create_new_script():
     
     return redirect(url_for('main.success'))
 
-@editor.route("/create")
-def add_new_script():
-    new_user = NeoScript(
-        name = "name",
-        description = "description",
-        author = "author",
-        script = "script",
-    )
-    new_user.save()
-    return str(new_user.id)
-
 @editor.route("/list")
+@login_required
 def get_all_scripts():
-    return {'myscripts':json.loads(NeoScript.objects.order_by('-date').to_json())}
+    return {'myscripts':json.loads(NeoScript.objects(author=str(current_user.id)).order_by('-date').to_json())}
+
+
+@editor.route("/create-new-work", methods=['POST'])
+@login_required
+def create_new_work():
+    name = request.form.get('name')
+
+    new_work = NeoWork(
+        name = name,
+        description = request.form.get('description'),
+        author = str(current_user.id),
+        neoScriptsList = [],
+    )
+
+    new_work.save()
+
+    flash(f"Your Work {name} is saved")
+    
+    return redirect(url_for('main.success'))

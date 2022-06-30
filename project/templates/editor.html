@@ -90,12 +90,12 @@
     <div class="columns">
       <aside class="menu column has-text-left">
         <p class="menu-label">
-          My Works
+          My NeoWorks
         </p>
         <ul id="tabs" class="menu-list">
           <li id="newScript"><a style="color:black">New Script</a></li>
           <li id="allScript"><a style="color:black">All Scripts</a></li>
-          <li id="scriptGroups"><a style="color:black">Script Groups</a></li>
+          <li id="scriptGroups"><a style="color:black">NeoWorks</a></li>
         </ul>
       </aside>
       <div class="column is-four-fifths">
@@ -130,6 +130,36 @@
           </div>
           <div id="scriptGroups">
             The script groups
+            <div class="is-fab has-content-centered">
+              <button class="button is-danger is-rounded" onClick="toggleModal()">
+                <span class="icon">
+                  <i class="fas fa-pen-fancy"></i>
+                </span>
+                <span>New NeoWork</span>
+              </button>
+              <div class="modal">
+                <div class="modal-background" onClick="toggleModal()"></div>
+                <div class="modal-content">
+                    <div class="box">
+                      <form method="POST" action="/create-new-work">
+                        <div class="field">
+                          <div class="control">
+                            <input class="input is-large" name="name" placeholder="Work Name" autofocus required>
+                          </div>
+                        </div>
+          
+                        <div class="field">
+                          <div class="control">
+                            <input class="input is-large" name="description" placeholder="Description" required>
+                          </div>
+                        </div>
+          
+                        <button class="button is-block is-info is-large is-fullwidth">Create NeoWork</button>
+                      </form>
+                    </div>
+                </div>       
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -190,7 +220,10 @@
     })    
   }
 
-  
+  function toggleModal(){
+    var modal = currentView.getElementsByClassName("modal")[0];
+    modal.classList.toggle("is-active");
+  }
 
 
   /***********************************************************************/
