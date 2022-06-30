@@ -76,6 +76,16 @@
   .itemlist:hover .creator p {
     color: #fff;
   }
+
+  .accordion:hover .accordion-body{
+    display: block;
+  }
+
+  .accordion-body {
+    padding: 0.01em 16px;
+    display: none;
+  }
+  
 </style>
 
 <div style="min-height:100vh">
@@ -100,6 +110,7 @@
       <div class="column is-four-fifths">
         <div id="tab-view-holder" class="is-large">
           <div id="newScripts">
+            My NeoScripts
             <section class="has-text-left">
             </section>
             <div class="is-fab has-content-centered">
@@ -244,15 +255,24 @@
     myWorks.forEach((s,i)=>{  
       var item = document.createElement("div");
 
+      console.log('what is this',s.neoScriptsList)
       var createdAt = new Date(s.creationDate.$date)
-      item.innerHTML = `<div class="itemlist">
-        <div class="rank"><span>${i+1}</span></div>
-        <div class="creator">
-          <div>
-            <h4>${s.name}</h4>
-            <p>${s.description}</p>
+      item.innerHTML = `
+      <div class="accordion">
+        <div class="accordion-title">
+          <div class="itemlist">
+            <div class="rank"><span>${i+1}</span></div>
+            <div class="creator">
+              <div>
+                <h4>${s.name}</h4>
+                <p>${s.description}</p>
+              </div>
+              <p class="date">${createdAt.toLocaleString().replace(',','')}</p>
+            </div>
           </div>
-          <p class="date">${createdAt.toLocaleString().replace(',','')}</p>
+        </div>
+        <div class="accordion-body">
+          ${s.neoScriptsList.length} of Scripts
         </div>
       </div>`
 
