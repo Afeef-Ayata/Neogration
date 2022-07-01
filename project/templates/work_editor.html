@@ -20,13 +20,13 @@
             {% with neoScript = getMyScripts() %}
               {% if neoScript %}
                 {% for script in neoScript.myscripts %} 
-                    <li id={{script._id['$oid']}}>{{script.name}}</li>
+                    <li id={{script._id['$oid']}} draggable="true" ondragstart="drag(event)">{{script.name}}</li>
                 {% endfor %}
               {% endif %}
             {% endwith %}
         </ul>
       </aside>
-      <div class="column is-four-fifths" style='background-color:red'>
+      <div class="column is-four-fifths" style='background-color:red' ondrop="drop(event)" ondragover="onDragOver(event)">
         <div id="tab-view-holder" class="is-large">
           This is the editor view for your neoworks
           <p>{{work_id}}</p>
@@ -35,5 +35,29 @@
     </div>
   </div> 
 <div>
+
+<script>
+  function onDragOver(ev) {
+    console.log('ondragover',ev)
+    ev.preventDefault();
+    
+  }
+  
+  function drag(ev) {
+    ev.dataTransfer.setData("text", ev.target.id);
+
+    event
+    .currentTarget
+    .style
+    .backgroundColor = 'red';
+  }
+  
+  function drop(ev) {
+    ev.preventDefault();
+    var data = ev.dataTransfer.getData("text");
+
+    ev.target.appendChild(document.getElementById(data).cloneNode(true));
+  }
+</script>
 
 {% endblock %}
