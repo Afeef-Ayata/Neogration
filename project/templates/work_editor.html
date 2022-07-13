@@ -26,10 +26,17 @@
             {% endwith %}
         </ul>
       </aside>
-      <div class="column is-four-fifths" style='background-color:red' ondrop="drop(event)" ondragover="onDragOver(event)">
+      <div class="column is-four-fifths">
         <div id="tab-view-holder" class="is-large">
           This is the editor view for your neoworks
           <p>{{work_id}}</p>
+          <div id="work_editor" style='background-color:red; min-height:60vh; padding:20px' ondrop="drop(event)" ondragover="onDragOver(event)" >
+            <style>
+              #work_editor li{
+                margin:9px;
+              }
+            </style>
+          </div>
         </div>
       </div>
     </div>
@@ -38,9 +45,13 @@
 
 <script>
   function onDragOver(ev) {
-    console.log('ondragover',ev)
-    ev.preventDefault();
-    
+    // "ev.toElement", "ev.target" and "ev.srcElement" return the same dom element
+    // for the time being we are using  ev.target
+
+    // only allow to drop in "work_editor"
+    if ("work_editor" === ev.target.id){
+      ev.preventDefault();
+    }
   }
   
   function drag(ev) {
@@ -49,7 +60,9 @@
     event
     .currentTarget
     .style
-    .backgroundColor = 'red';
+    .backgroundColor = 'yellow';
+
+    event.currentTarget.style.color = 'black';
   }
   
   function drop(ev) {
