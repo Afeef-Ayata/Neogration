@@ -30,13 +30,16 @@
         <div id="tab-view-holder" class="is-large">
           This is the editor view for your neoworks
           <p>{{work_id}}</p>
+          <style>
+            #work_editor li{
+              margin:9px;
+            }
+          </style>
           <div id="work_editor" style='background-color:red; min-height:60vh; padding:20px' ondrop="drop(event)" ondragover="onDragOver(event)" >
-            <style>
-              #work_editor li{
-                margin:9px;
-              }
-            </style>
           </div>
+          <button class="button is-danger is-rounded" onClick="saveWork()">
+            Save
+          </button>
         </div>
       </div>
     </div>
@@ -71,6 +74,24 @@
 
     ev.target.appendChild(document.getElementById(data).cloneNode(true));
   }
+
+  const saveWork = () =>{
+    var workEditor = document.getElementById("work_editor")
+    
+    // Gather together all the ids of the dragged elements
+    var ids = [...workEditor.children].reduce((prev,child,index)=>{
+      // prev in index 1 will be the first object in the array
+      // so, if index equals 1, then return a new array consist of the ids from both 'prev' and 'child'
+      if(index === 1){
+        return [prev.id,child.id]
+      }
+      prev.push(child.id)
+      
+      return prev
+    })
+
+  }
+
 </script>
 
 {% endblock %}
