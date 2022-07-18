@@ -58,10 +58,19 @@ def create_new_work():
     
     return redirect(url_for('main.success'))
 
-@editor.route('/neoworks/<string:work_id>')
+@editor.route('/neoworks/<string:work_id>', methods = ['GET','PUT'])
 @login_required
 def workeditor(work_id):
-    # TODO make sure the current user have permission to work on provided workId
-    # TODO make work Editor
-    print('this is just fun',work_id)
-    return render_template('work_editor.html', work_id = work_id)
+    # Get the NeoWork by id 
+    work = NeoWork.objects(pk=work_id)[0]
+    # make sure the current user have permission to work on provided workId
+    isAuthenticated = work.author == str(current_user.id)
+    if not isAuthenticated:
+        return json.dumps({"status":401,"message":'Ho sorry you dont have permission to access this neowork'}),401
+
+    if request.method == 'PUT':
+        jsonData = request.json
+        result = work.update(neoScriptsList=jsonData['neoScriptIds'])
+        return str(result)
+    else :
+        return render_template('work_editor.html', work_id = work_id)

@@ -37,7 +37,7 @@
           </style>
           <div id="work_editor" style='background-color:red; min-height:60vh; padding:20px' ondrop="drop(event)" ondragover="onDragOver(event)" >
           </div>
-          <button class="button is-danger is-rounded" onClick="saveWork()">
+          <button class="button is-danger is-rounded" onClick="saveWork('{{work_id}}')">
             Save
           </button>
         </div>
@@ -75,7 +75,7 @@
     ev.target.appendChild(document.getElementById(data).cloneNode(true));
   }
 
-  const saveWork = () =>{
+  const saveWork = (workId) =>{
     var workEditor = document.getElementById("work_editor")
     
     // Gather together all the ids of the dragged elements
@@ -89,6 +89,27 @@
       
       return prev
     })
+
+    // POST request using fetch()
+    fetch("/neoworks/"+workId, {
+        // Adding method type
+        method: "PUT",
+        // Adding body or contents to send
+        body: JSON.stringify({
+            neoScriptIds : ids
+        }),
+        // Adding headers to the request
+        headers: {
+            "Content-type": "application/json; charset=UTF-8"
+        }
+    })
+    // Converting to JSON
+    .then(response => {
+      var d = response.json()
+      return d
+    })
+    // Displaying results to console
+    .then(json => {});
 
   }
 
