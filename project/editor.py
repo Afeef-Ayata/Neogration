@@ -37,6 +37,16 @@ def my_neoscripts():
     return {'myscripts':json.loads(NeoScript.objects(author=str(current_user.id)).order_by('-date').to_json())}
 
 @login_required
+def getScriptById(scriptId):
+    for s in my_neoscripts()['myscripts']:
+        print('what is this'+ str(s))
+        if s['_id']['$oid'] == scriptId:
+            name = s['name']
+            return name
+    
+    return '---'
+
+@login_required
 def my_neoworks():
     return {'myworks':json.loads(NeoWork.objects(author=str(current_user.id)).order_by('-date').to_json())}
 
@@ -73,4 +83,4 @@ def workeditor(work_id):
         result = work.update(neoScriptsList=jsonData['neoScriptIds'])
         return str(result)
     else :
-        return render_template('work_editor.html', work_id = work_id)
+        return render_template('work_editor.html', work_id = work_id, work = work)

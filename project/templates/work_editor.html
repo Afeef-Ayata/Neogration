@@ -29,13 +29,20 @@
       <div class="column is-four-fifths">
         <div id="tab-view-holder" class="is-large">
           This is the editor view for your neoworks
-          <p>{{work_id}}</p>
+          <p>{{work.name}}</p>
           <style>
             #work_editor li{
               margin:9px;
             }
           </style>
           <div id="work_editor" style='background-color:red; min-height:60vh; padding:20px' ondrop="drop(event)" ondragover="onDragOver(event)" >
+            {% with neoScript = getMyScripts() %}
+              {% for scriptId in work.neoScriptsList%}
+                {% with scriptName = getScriptById(scriptId)%}
+                  <li id={{scriptId}} draggable="true" ondragstart="drag(event)">{{scriptName}}</li>
+                {% endwith %}
+              {% endfor %}
+            {% endwith %}
           </div>
           <button class="button is-danger is-rounded" onClick="saveWork('{{work_id}}')">
             Save
