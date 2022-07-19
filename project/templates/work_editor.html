@@ -33,16 +33,31 @@
           <style>
             #work_editor li{
               margin:9px;
+              display: flex !important;
+              justify-content: space-between;
+              flex-direction: row;
+            }
+
+            #work_editor li:hover{
+              background-color: green !important;
+            }
+            .closs{
+              margin: 0px 4px;
+              cursor: pointer;
+            }
+            #work_editor li:hover .closs{
+              display:block !important;
             }
           </style>
           <div id="work_editor" style='background-color:red; min-height:60vh; padding:20px' ondrop="drop(event)" ondragover="onDragOver(event)" >
-            {% with neoScript = getMyScripts() %}
-              {% for scriptId in work.neoScriptsList%}
-                {% with scriptName = getScriptById(scriptId)%}
-                  <li id={{scriptId}} draggable="true" ondragstart="drag(event)">{{scriptName}}</li>
-                {% endwith %}
-              {% endfor %}
-            {% endwith %}
+            {% for scriptId in work.neoScriptsList%}
+              {% with scriptName = getScriptById(scriptId)%}
+                <li id={{scriptId}} draggable="true" ondragstart="drag(event)">
+                  <span>{{scriptName}}</span>
+                  <div class="closs is-hidden" onClick="removeScript(this)">X</div>
+                </li>
+              {% endwith %}
+            {% endfor %}
           </div>
           <button class="button is-danger is-rounded" onClick="saveWork('{{work_id}}')">
             Save
@@ -119,6 +134,8 @@
     .then(json => {});
 
   }
+
+  const removeScript = (el) => el.parentNode.remove()
 
 </script>
 

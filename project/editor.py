@@ -39,7 +39,6 @@ def my_neoscripts():
 @login_required
 def getScriptById(scriptId):
     for s in my_neoscripts()['myscripts']:
-        print('what is this'+ str(s))
         if s['_id']['$oid'] == scriptId:
             name = s['name']
             return name
