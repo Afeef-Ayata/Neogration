@@ -31,31 +31,44 @@
           This is the editor view for your neoworks
           <p>{{work.name}}</p>
           <style>
-            #work_editor li{
+            .scriptdiv{
               margin:9px;
+              padding:10px;
+              background-color: #00be9a;
+            }
+
+            .row-flex{
               display: flex !important;
               justify-content: space-between;
               flex-direction: row;
             }
-
-            #work_editor li:hover{
+            #work_editor .scriptdiv:hover{
               background-color: green !important;
             }
             .closs{
               margin: 0px 4px;
               cursor: pointer;
             }
-            #work_editor li:hover .closs{
+            #work_editor .scriptdiv:hover .closs{
               display:block !important;
             }
+
+            .scriptdiv textarea{
+              width:100%;
+            }
           </style>
-          <div id="work_editor" style='background-color:red; min-height:60vh; padding:20px' ondrop="drop(event)" ondragover="onDragOver(event)" >
+          <div id="work_editor" style='background-color:#00a182; min-height:60vh; padding:20px' ondrop="drop(event)" ondragover="onDragOver(event)" >
             {% for scriptId in work.neoScriptsList%}
-              {% with scriptName = getScriptById(scriptId)%}
-                <li id={{scriptId}} draggable="true" ondragstart="drag(event)">
-                  <span>{{scriptName}}</span>
-                  <div class="closs is-hidden" onClick="removeScript(this)">X</div>
-                </li>
+              {% with script = getScriptById(scriptId)%}
+                <div class="scriptdiv" id={{scriptId}}>
+                    <div class="row-flex">
+                      <h1>{{script.name}}</h1>
+                      <div class="closs is-hidden" onClick="removeScript(this)">X</div>
+                    </div>                   
+                    <textarea rows="4" cols="50">
+                      {{script.script}}
+                    </textarea>
+                </div>
               {% endwith %}
             {% endfor %}
           </div>
@@ -136,6 +149,25 @@
   }
 
   const removeScript = (el) => el.parentNode.remove()
+
+  // Add onInputChangeListener for all textarea
+  const textAreas = document.querySelectorAll("textarea");
+  Array.prototype.forEach.call(textAreas,(ta)=>{
+    ta.addEventListener(
+      "input",
+      (e) => {
+        // Show the update button for this specific script
+        let updateBtn = document.createElement('button')
+        updateBtn.innerHTML = "Update this Code"
+
+        let parent = ta.parentNode;
+        if(parent.childElementCount === 2 ){
+          parent.appendChild(updateBtn)
+        }
+      },
+      false
+    );
+  })
 
 </script>
 

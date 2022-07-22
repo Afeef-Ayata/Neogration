@@ -40,8 +40,7 @@ def my_neoscripts():
 def getScriptById(scriptId):
     for s in my_neoscripts()['myscripts']:
         if s['_id']['$oid'] == scriptId:
-            name = s['name']
-            return name
+            return s
     
     return '---'
 
