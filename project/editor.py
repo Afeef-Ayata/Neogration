@@ -82,3 +82,21 @@ def workeditor(work_id):
         return str(result)
     else :
         return render_template('work_editor.html', work_id = work_id, work = work)
+
+@editor.route('/update/neoscript/<string:scriptId>', methods = ['PUT'])
+@login_required
+def updatescript(scriptId):
+    # Get the NeoScript by id 
+    script = NeoScript.objects(pk=scriptId)[0]
+    # make sure the current user have permission to work on provided scriptId
+    isAuthenticated = script.author == str(current_user.id)
+    if not isAuthenticated:
+        return json.dumps({"status":401,"message":'Ho sorry you dont have permission to access this neoscript'}),401
+
+    if request.method == 'PUT':
+        jsonData = request.json
+        result = script.update(script=jsonData['script'])
+        return str(result)
+    else :
+        return 'Method not allowed'
+

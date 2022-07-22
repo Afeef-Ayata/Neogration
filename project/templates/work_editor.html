@@ -125,7 +125,7 @@
       return prev
     })
 
-    // POST request using fetch()
+    // PUT request using fetch()
     fetch("/neoworks/"+workId, {
         // Adding method type
         method: "PUT",
@@ -139,16 +139,13 @@
         }
     })
     // Converting to JSON
-    .then(response => {
-      var d = response.json()
-      return d
-    })
+    .then(response => response.json())
     // Displaying results to console
     .then(json => {});
 
   }
 
-  const removeScript = (el) => el.parentNode.remove()
+  const removeScript = (el) => el.parentNode.parentNode.remove()
 
   // Add onInputChangeListener for all textarea
   const textAreas = document.querySelectorAll("textarea");
@@ -159,6 +156,25 @@
         // Show the update button for this specific script
         let updateBtn = document.createElement('button')
         updateBtn.innerHTML = "Update this Code"
+        
+        updateBtn.onclick= ()=>{
+          var scriptId = ta.parentNode.id
+          fetch("/update/neoscript/"+scriptId, {
+            // Adding method type
+            method: "PUT",
+            // Adding body or contents to send
+            body: JSON.stringify({
+                script : ta.value
+            }),
+            // Adding headers to the request
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+          })
+          .then(res=>{
+            parent.removeChild(updateBtn)
+          });
+        }
 
         let parent = ta.parentNode;
         if(parent.childElementCount === 2 ){
