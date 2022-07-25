@@ -72,9 +72,14 @@
               {% endwith %}
             {% endfor %}
           </div>
-          <button class="button is-danger is-rounded" onClick="saveWork('{{work_id}}')">
-            Save
-          </button>
+          <div>
+            <button class="button is-warning is-rounded" onClick="runWork('{{work_id}}')">
+              Run
+            </button>
+            <button class="button is-danger is-rounded" onClick="saveWork('{{work_id}}')">
+              Save
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -114,16 +119,7 @@
     var workEditor = document.getElementById("work_editor")
     
     // Gather together all the ids of the dragged elements
-    var ids = [...workEditor.children].reduce((prev,child,index)=>{
-      // prev in index 1 will be the first object in the array
-      // so, if index equals 1, then return a new array consist of the ids from both 'prev' and 'child'
-      if(index === 1){
-        return [prev.id,child.id]
-      }
-      prev.push(child.id)
-      
-      return prev
-    })
+    var ids = [...workEditor.children].map((neoScript)=>neoScript.id);
 
     // PUT request using fetch()
     fetch("/neoworks/"+workId, {
@@ -184,6 +180,20 @@
       false
     );
   })
+
+  const runWork = (workId) =>{
+    // PUT request using fetch()
+    fetch("/run-work/"+workId)
+    // Converting to JSON
+    .then(response => {
+      var res = response.json()
+      console.log('what is res ',res)
+    })
+    // Displaying results to console
+    .then(json => {
+      console.log('what is json ' + json)
+    });
+  }
 
 </script>
 

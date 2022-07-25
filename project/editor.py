@@ -38,11 +38,7 @@ def my_neoscripts():
 
 @login_required
 def getScriptById(scriptId):
-    for s in my_neoscripts()['myscripts']:
-        if s['_id']['$oid'] == scriptId:
-            return s
-    
-    return '---'
+    return NeoScript.objects(pk=scriptId).first()
 
 @login_required
 def my_neoworks():
@@ -72,8 +68,8 @@ def workeditor(work_id):
     # Get the NeoWork by id 
     work = NeoWork.objects(pk=work_id)[0]
     # make sure the current user have permission to work on provided workId
-    isAuthenticated = work.author == str(current_user.id)
-    if not isAuthenticated:
+    authenticated = work.author == str(current_user.id)
+    if not authenticated:
         return json.dumps({"status":401,"message":'Ho sorry you dont have permission to access this neowork'}),401
 
     if request.method == 'PUT':
@@ -89,8 +85,8 @@ def updatescript(scriptId):
     # Get the NeoScript by id 
     script = NeoScript.objects(pk=scriptId)[0]
     # make sure the current user have permission to work on provided scriptId
-    isAuthenticated = script.author == str(current_user.id)
-    if not isAuthenticated:
+    authenticated = script.author == str(current_user.id)
+    if not authenticated:
         return json.dumps({"status":401,"message":'Ho sorry you dont have permission to access this neoscript'}),401
 
     if request.method == 'PUT':
