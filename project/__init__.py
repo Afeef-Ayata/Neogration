@@ -42,6 +42,9 @@ def create_app():
     app.jinja_env.globals.update(getMyWorks=my_neoworks)
     app.jinja_env.globals.update(getMyScripts=my_neoscripts)
     app.jinja_env.globals.update(getScriptById=getScriptById)
+
+    from .job import job as job_blueprint
+    app.register_blueprint(job_blueprint)
     
 
     return app

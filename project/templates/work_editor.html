@@ -17,13 +17,13 @@
           My Scripts
         </p>
         <ul id="tabs" class="menu-list">
-            {% with neoScript = getMyScripts() %}
-              {% if neoScript %}
-                {% for script in neoScript.myscripts %} 
-                    <li id={{script._id['$oid']}} draggable="true" ondragstart="drag(event)">{{script.name}}</li>
-                {% endfor %}
-              {% endif %}
-            {% endwith %}
+          {% with neoScript = getMyScripts() %}
+          {% if neoScript %}
+          {% for script in neoScript.myscripts %}
+          <li id={{script._id['$oid']}} draggable="true" ondragstart="drag(event)">{{script.name}}</li>
+          {% endfor %}
+          {% endif %}
+          {% endwith %}
         </ul>
       </aside>
       <div class="column is-four-fifths">
@@ -31,45 +31,49 @@
           This is the editor view for your neoworks
           <p>{{work.name}}</p>
           <style>
-            .scriptdiv{
-              margin:9px;
-              padding:10px;
+            .scriptdiv {
+              margin: 9px;
+              padding: 10px;
               background-color: #00be9a;
             }
 
-            .row-flex{
+            .row-flex {
               display: flex !important;
               justify-content: space-between;
               flex-direction: row;
             }
-            #work_editor .scriptdiv:hover{
+
+            #work_editor .scriptdiv:hover {
               background-color: green !important;
             }
-            .closs{
+
+            .closs {
               margin: 0px 4px;
               cursor: pointer;
             }
-            #work_editor .scriptdiv:hover .closs{
-              display:block !important;
+
+            #work_editor .scriptdiv:hover .closs {
+              display: block !important;
             }
 
-            .scriptdiv textarea{
-              width:100%;
+            .scriptdiv textarea {
+              width: 100%;
             }
           </style>
-          <div id="work_editor" style='background-color:#00a182; min-height:60vh; padding:20px' ondrop="drop(event)" ondragover="onDragOver(event)" >
+          <div id="work_editor" style='background-color:#00a182; min-height:60vh; padding:20px' ondrop="drop(event)"
+            ondragover="onDragOver(event)">
             {% for scriptId in work.neoScriptsList%}
-              {% with script = getScriptById(scriptId)%}
-                <div class="scriptdiv" id={{scriptId}}>
-                    <div class="row-flex">
-                      <h1>{{script.name}}</h1>
-                      <div class="closs is-hidden" onClick="removeScript(this)">X</div>
-                    </div>                   
-                    <textarea rows="4" cols="50">
+            {% with script = getScriptById(scriptId)%}
+            <div class="scriptdiv" id={{scriptId}}>
+              <div class="row-flex">
+                <h1>{{script.name}}</h1>
+                <div class="closs is-hidden" onClick="removeScript(this)">X</div>
+              </div>
+              <textarea rows="4" cols="50">
                       {{script.script}}
                     </textarea>
-                </div>
-              {% endwith %}
+            </div>
+            {% endwith %}
             {% endfor %}
           </div>
           <div>
@@ -80,121 +84,135 @@
               Save
             </button>
           </div>
+          <div>
+            <button onclick="copyToClipboard('{{work_id}}')">
+              copy the trigger Url
+            </button>
+          </div>
         </div>
       </div>
     </div>
-  </div> 
-<div>
+  </div>
+  <div>
 
-<script>
-  function onDragOver(ev) {
-    // "ev.toElement", "ev.target" and "ev.srcElement" return the same dom element
-    // for the time being we are using  ev.target
+    <script>
+      function onDragOver(ev) {
+        // "ev.toElement", "ev.target" and "ev.srcElement" return the same dom element
+        // for the time being we are using  ev.target
 
-    // only allow to drop in "work_editor"
-    if ("work_editor" === ev.target.id){
-      ev.preventDefault();
-    }
-  }
-  
-  function drag(ev) {
-    ev.dataTransfer.setData("text", ev.target.id);
+        // only allow to drop in "work_editor"
+        if ("work_editor" === ev.target.id) {
+          ev.preventDefault();
+        }
+      }
 
-    event
-    .currentTarget
-    .style
-    .backgroundColor = 'yellow';
+      function drag(ev) {
+        ev.dataTransfer.setData("text", ev.target.id);
 
-    event.currentTarget.style.color = 'black';
-  }
-  
-  function drop(ev) {
-    ev.preventDefault();
-    var data = ev.dataTransfer.getData("text");
+        event
+          .currentTarget
+          .style
+          .backgroundColor = 'yellow';
 
-    ev.target.appendChild(document.getElementById(data).cloneNode(true));
-  }
+        event.currentTarget.style.color = 'black';
+      }
 
-  const saveWork = (workId) =>{
-    var workEditor = document.getElementById("work_editor")
-    
-    // Gather together all the ids of the dragged elements
-    var ids = [...workEditor.children].map((neoScript)=>neoScript.id);
+      function drop(ev) {
+        ev.preventDefault();
+        var data = ev.dataTransfer.getData("text");
 
-    // PUT request using fetch()
-    fetch("/neoworks/"+workId, {
-        // Adding method type
-        method: "PUT",
-        // Adding body or contents to send
-        body: JSON.stringify({
-            neoScriptIds : ids
-        }),
-        // Adding headers to the request
-        headers: {
+        ev.target.appendChild(document.getElementById(data).cloneNode(true));
+      }
+
+      const saveWork = (workId) => {
+        var workEditor = document.getElementById("work_editor")
+
+        // Gather together all the ids of the dragged elements
+        var ids = [...workEditor.children].map((neoScript) => neoScript.id);
+
+        // PUT request using fetch()
+        fetch("/neoworks/" + workId, {
+          // Adding method type
+          method: "PUT",
+          // Adding body or contents to send
+          body: JSON.stringify({
+            neoScriptIds: ids
+          }),
+          // Adding headers to the request
+          headers: {
             "Content-type": "application/json; charset=UTF-8"
-        }
-    })
-    // Converting to JSON
-    .then(response => response.json())
-    // Displaying results to console
-    .then(json => {});
+          }
+        })
+          // Converting to JSON
+          .then(response => response.json())
+          // Displaying results to console
+          .then(json => { });
 
-  }
+      }
 
-  const removeScript = (el) => el.parentNode.parentNode.remove()
+      const removeScript = (el) => el.parentNode.parentNode.remove()
 
-  // Add onInputChangeListener for all textarea
-  const textAreas = document.querySelectorAll("textarea");
-  Array.prototype.forEach.call(textAreas,(ta)=>{
-    ta.addEventListener(
-      "input",
-      (e) => {
-        // Show the update button for this specific script
-        let updateBtn = document.createElement('button')
-        updateBtn.innerHTML = "Update this Code"
-        
-        updateBtn.onclick= ()=>{
-          var scriptId = ta.parentNode.id
-          fetch("/update/neoscript/"+scriptId, {
-            // Adding method type
-            method: "PUT",
-            // Adding body or contents to send
-            body: JSON.stringify({
-                script : ta.value
-            }),
-            // Adding headers to the request
-            headers: {
-                "Content-type": "application/json; charset=UTF-8"
+      // Add onInputChangeListener for all textarea
+      const textAreas = document.querySelectorAll("textarea");
+      Array.prototype.forEach.call(textAreas, (ta) => {
+        ta.addEventListener(
+          "input",
+          (e) => {
+            // Show the update button for this specific script
+            let updateBtn = document.createElement('button')
+            updateBtn.innerHTML = "Update this Code"
+
+            updateBtn.onclick = () => {
+              var scriptId = ta.parentNode.id
+              fetch("/update/neoscript/" + scriptId, {
+                // Adding method type
+                method: "PUT",
+                // Adding body or contents to send
+                body: JSON.stringify({
+                  script: ta.value
+                }),
+                // Adding headers to the request
+                headers: {
+                  "Content-type": "application/json; charset=UTF-8"
+                }
+              })
+                .then(res => {
+                  parent.removeChild(updateBtn)
+                });
             }
+
+            let parent = ta.parentNode;
+            if (parent.childElementCount === 2) {
+              parent.appendChild(updateBtn)
+            }
+          },
+          false
+        );
+      })
+
+      const runWork = (workId) => {
+        // GET request using fetch()
+        fetch("/run-work/" + workId)
+          // Converting to JSON
+          .then(response => {
+            var res = response.json()
+            console.log('what is res ', res)
           })
-          .then(res=>{
-            parent.removeChild(updateBtn)
+          // Displaying results to console
+          .then(json => {
+            console.log('what is json ' + json)
           });
-        }
+      }
 
-        let parent = ta.parentNode;
-        if(parent.childElementCount === 2 ){
-          parent.appendChild(updateBtn)
-        }
-      },
-      false
-    );
-  })
+      function copyToClipboard(workId) {
+        var triggerUrl = window.location.host + '/trigger/' + workId
 
-  const runWork = (workId) =>{
-    // PUT request using fetch()
-    fetch("/run-work/"+workId)
-    // Converting to JSON
-    .then(response => {
-      var res = response.json()
-      console.log('what is res ',res)
-    })
-    // Displaying results to console
-    .then(json => {
-      console.log('what is json ' + json)
-    });
-  }
+        /* Copy the text inside the text field */
+        navigator.clipboard.writeText(triggerUrl);
+        /* Alert the copied text */
+        alert("Copied the trigger : \n" + triggerUrl);
+      }
 
-</script>
+    </script>
 
-{% endblock %}
+    {% endblock %}
