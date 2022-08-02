@@ -3,9 +3,6 @@ from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required
 
 from project.models import NeoScript, NeoWork
-from dotenv import dotenv_values
-
-config = dotenv_values(".env")
 
 editor = Blueprint('editor', __name__)
 

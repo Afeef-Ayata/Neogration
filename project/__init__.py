@@ -3,10 +3,11 @@ from flask import Flask
 from flask_login import LoginManager
 from os import environ
 
-# init cloud MongoDb
-connect(host=environ.get("ATLAS_URI"))
-
 def create_app():
+    
+    # init cloud MongoDb
+    connect(host=environ.get("ATLAS_URI"))
+
     app = Flask(__name__)
 
     # set the secret_key
