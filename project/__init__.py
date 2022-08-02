@@ -1,11 +1,10 @@
-from dotenv import dotenv_values
 from mongoengine import connect
 from flask import Flask
 from flask_login import LoginManager
+from os import environ
 
 # init cloud MongoDb
-config = dotenv_values(".env")
-connect(host=config["ATLAS_URI"])
+connect(host=environ.get("ATLAS_URI"))
 
 def create_app():
     app = Flask(__name__)
